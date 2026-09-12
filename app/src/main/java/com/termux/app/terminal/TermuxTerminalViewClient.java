@@ -796,7 +796,27 @@ public class TermuxTerminalViewClient extends TermuxTerminalViewClientBase {
 
         String text = ShareUtils.getTextStringFromClipboardIfSet(mActivity, true);
         if (text != null)
-            session.getEmulator().paste(text);
+public void copySessionTranscript() {
+        TerminalSession session = mActivity.getCurrentSession();
+        if (session == null) return;
+
+        String transcriptText = ShellUtils.getTerminalSessionTranscriptText(session, false, true);
+        if (transcriptText == null) return;
+
+        transcriptText = DataUtils.getTruncatedCommandOutput(
+            transcriptText,
+            DataUtils.TRANSACTION_SIZE_LIMIT_IN_BYTES,
+            false,
+            true,
+            false
+        ).trim();
+
+        ClipboardManager clipboard = (ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
+        if (clipboard != null) {
+            clipboard.setPrimaryClip(ClipData.newPlainText("Termux Last Output", transcriptText));
+            Toast.makeText(mActivity, "Last output copied", Toast.LENGTH_SHORT).show();
+        }
+        }            session.getEmulator().paste(text);
     }
 
 }
