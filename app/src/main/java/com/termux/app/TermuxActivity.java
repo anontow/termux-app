@@ -188,6 +188,8 @@ public final class TermuxActivity extends AppCompatActivity implements ServiceCo
     private static final int CONTEXT_MENU_HELP_ID = 7;
     private static final int CONTEXT_MENU_SETTINGS_ID = 8;
     private static final int CONTEXT_MENU_REPORT_ID = 9;
+    private static final int CONTEXT_MENU_COPY_LAST_OUTPUT_ID = 12;
+    private static final int CONTEXT_MENU_PASTE_ID = 13;
 
     private static final String ARG_TERMINAL_TOOLBAR_TEXT_INPUT = "terminal_toolbar_text_input";
     private static final String ARG_ACTIVITY_RECREATED = "activity_recreated";
@@ -635,6 +637,8 @@ public final class TermuxActivity extends AppCompatActivity implements ServiceCo
 
         menu.add(Menu.NONE, CONTEXT_MENU_SELECT_URL_ID, Menu.NONE, R.string.action_select_url);
         menu.add(Menu.NONE, CONTEXT_MENU_SHARE_TRANSCRIPT_ID, Menu.NONE, R.string.action_share_transcript);
+        menu.add(Menu.NONE, CONTEXT_MENU_COPY_LAST_OUTPUT_ID, Menu.NONE, "Copy Last Output");
+        menu.add(Menu.NONE, CONTEXT_MENU_PASTE_ID, Menu.NONE, "Paste");
         if (!DataUtils.isNullOrEmpty(mTerminalView.getStoredSelectedText()))
             menu.add(Menu.NONE, CONTEXT_MENU_SHARE_SELECTED_TEXT, Menu.NONE, R.string.action_share_selected_text);
         if (autoFillEnabled)
@@ -667,6 +671,12 @@ public final class TermuxActivity extends AppCompatActivity implements ServiceCo
                 return true;
             case CONTEXT_MENU_SHARE_TRANSCRIPT_ID:
                 mTermuxTerminalViewClient.shareSessionTranscript();
+                return true;
+                case CONTEXT_MENU_COPY_LAST_OUTPUT_ID:
+                mTermuxTerminalViewClient.copySessionTranscript();
+                return true;
+            case CONTEXT_MENU_PASTE_ID:
+                mTermuxTerminalViewClient.doPaste();
                 return true;
             case CONTEXT_MENU_SHARE_SELECTED_TEXT:
                 mTermuxTerminalViewClient.shareSelectedText();
