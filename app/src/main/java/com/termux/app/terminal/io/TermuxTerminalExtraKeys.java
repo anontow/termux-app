@@ -42,7 +42,6 @@ public class TermuxTerminalExtraKeys extends TerminalExtraKeys {
         setExtraKeys();
     }
 
-
     /**
      * Set the terminal extra keys and style.
      */
@@ -50,9 +49,6 @@ public class TermuxTerminalExtraKeys extends TerminalExtraKeys {
         mExtraKeysInfo = null;
 
         try {
-            // The mMap stores the extra key and style string values while loading properties
-            // Check {@link #getExtraKeysInternalPropertyValueFromValue(String)} and
-            // {@link #getExtraKeysStyleInternalPropertyValueFromValue(String)}
             String extrakeys = (String) mActivity.getProperties().getInternalPropertyValue(TermuxPropertyConstants.KEY_EXTRA_KEYS, true);
             String extraKeysStyle = (String) mActivity.getProperties().getInternalPropertyValue(TermuxPropertyConstants.KEY_EXTRA_KEYS_STYLE, true);
 
@@ -70,7 +66,7 @@ public class TermuxTerminalExtraKeys extends TerminalExtraKeys {
             try {
                 mExtraKeysInfo = new ExtraKeysInfo(TermuxPropertyConstants.DEFAULT_IVALUE_EXTRA_KEYS, TermuxPropertyConstants.DEFAULT_IVALUE_EXTRA_KEYS_STYLE, ExtraKeysConstants.CONTROL_CHARS_ALIASES);
             } catch (JSONException e2) {
-                Logger.showToast(mActivity, "Can't create default extra keys",true);
+                Logger.showToast(mActivity, "Can't create default extra keys", true);
                 Logger.logStackTraceWithMessage(LOG_TAG, "Could create default extra keys: ", e);
                 mExtraKeysInfo = null;
             }
@@ -81,11 +77,11 @@ public class TermuxTerminalExtraKeys extends TerminalExtraKeys {
         return mExtraKeysInfo;
     }
 
-        @SuppressLint("RtlHardcoded")
+    @SuppressLint("RtlHardcoded")
     @Override
     public void onTerminalExtraKeyButtonClick(View view, String key, boolean ctrlDown, boolean altDown, boolean shiftDown, boolean fnDown) {
         if ("KEYBOARD".equals(key)) {
-            if(mTermuxTerminalViewClient != null)
+            if (mTermuxTerminalViewClient != null)
                 mTermuxTerminalViewClient.onToggleSoftKeyboardRequest();
         } else if ("DRAWER".equals(key)) {
             DrawerLayout drawerLayout = mTermuxTerminalViewClient.getActivity().getDrawer();
@@ -94,15 +90,20 @@ public class TermuxTerminalExtraKeys extends TerminalExtraKeys {
             else
                 drawerLayout.openDrawer(Gravity.LEFT);
         } else if ("PASTE".equals(key)) {
-            if(mTermuxTerminalViewClient != null)
+            if (mTermuxTerminalViewClient != null)
                 mTermuxTerminalViewClient.doPaste();
         } else if ("COPY".equals(key)) {
-            if(mTermuxTerminalViewClient != null)
+            if (mTermuxTerminalViewClient != null)
                 mTermuxTerminalViewClient.copySessionTranscript();
         } else if ("SCROLL".equals(key)) {
             TerminalView terminalView = mTermuxTerminalViewClient.getActivity().getTerminalView();
             if (terminalView != null && terminalView.mEmulator != null)
                 terminalView.mEmulator.toggleAutoScrollDisabled();
+        } else {
+            super.onTerminalExtraKeyButtonClick(view, key, ctrlDown, altDown, shiftDown, fnDown);
+        }
+    }
+}
         } else {
             super.onTerminalExtraKeyButtonClick(view, key, ctrlDown, altDown, shiftDown, fnDown);
         }
