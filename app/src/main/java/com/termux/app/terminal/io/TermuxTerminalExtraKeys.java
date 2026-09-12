@@ -107,7 +107,5 @@ public class TermuxTerminalExtraKeys extends TerminalExtraKeys {
             super.onTerminalExtraKeyButtonClick(view, key, ctrlDown, altDown, shiftDown, fnDown);
         }
     }
-
-    }
-
 }
+
