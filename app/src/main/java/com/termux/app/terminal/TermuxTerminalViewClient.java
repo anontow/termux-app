@@ -789,14 +789,19 @@ public class TermuxTerminalViewClient extends TermuxTerminalViewClientBase {
         }.start();
     }
 
+ 
     public void doPaste() {
         TerminalSession session = mActivity.getCurrentSession();
         if (session == null) return;
         if (!session.isRunning()) return;
 
-        String text = ShareUtils.getTextStringFromClipboardIfSet(mActivity, true);
-        if (text != null)
-public void copySessionTranscript() {
+        CharSequence text = ShareUtils.getTextStringFromClipboardIfSet(mActivity, true);
+        if (text != null) {
+            session.getEmulator().paste(text.toString());
+        }
+    }
+
+    public void copySessionTranscript() {
         TerminalSession session = mActivity.getCurrentSession();
         if (session == null) return;
 
@@ -816,7 +821,5 @@ public void copySessionTranscript() {
             clipboard.setPrimaryClip(ClipData.newPlainText("Termux Last Output", transcriptText));
             Toast.makeText(mActivity, "Last output copied", Toast.LENGTH_SHORT).show();
         }
-        }            session.getEmulator().paste(text);
     }
-
 }
